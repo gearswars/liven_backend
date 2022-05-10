@@ -1,10 +1,11 @@
+const webpack = require(`webpack`);
+
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
-const WebpackShellPlugin = require('webpack-shell-plugin');
 
-const {
-    NODE_ENV = 'production',
-} = process.env;
+require('dotenv').config({path: './.env'});
+
+const {NODE_ENV = 'production'} = process.env;
 
 module.exports = {
     entry: './src/index.ts',
@@ -28,5 +29,10 @@ module.exports = {
                 ]
             }
         ]
-    }
+    },
+    plugins: [
+        new webpack.DefinePlugin({
+            "process.env": JSON.stringify(process.env)
+        }),
+    ]
 }
