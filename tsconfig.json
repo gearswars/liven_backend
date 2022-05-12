@@ -2,6 +2,7 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "sourceMap": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true
   }
 }

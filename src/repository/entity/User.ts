@@ -5,21 +5,21 @@ import {Address} from "./Address";
 export class User {
 
     @PrimaryGeneratedColumn()
-    id: number
+    id?: number
 
     @Column()
-    name: string
+    name?: string
 
     @Column()
-    surname: string
+    surname?: string
 
     @Column()
-    login: string
+    login?: string
 
     @Column()
-    password: string
+    password?: string
 
-    @OneToMany(() => Address, (address) => address.address)
-    address: Address[]
+    @OneToMany(() => Address, (address) => address.user, {cascade: true})
+    addresses?: Address[]
 
 }
