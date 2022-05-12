@@ -8,7 +8,7 @@ require('dotenv').config({path: './.env'});
 const {NODE_ENV = 'production'} = process.env;
 
 module.exports = {
-    entry: './src/index.ts',
+    entry: './src/server.ts',
     mode: NODE_ENV,
     target: 'node',
     watch: NODE_ENV === 'development',

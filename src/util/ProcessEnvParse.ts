@@ -7,7 +7,8 @@ export const properties: ProcessEnvInterface = {
     port: <portType><unknown>process.env.PORT,
     username: process.env.LOGIN,
     password: process.env.PASSWORD,
-    database: process.env.DATABASE
+    database: process.env.DATABASE,
+    secret: process.env.SECRET
 }
 
 export interface ProcessEnvInterface {
@@ -17,4 +18,5 @@ export interface ProcessEnvInterface {
     username?: string;
     password?: string;
     database?: string;
+    secret?: string;
 }

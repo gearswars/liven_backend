@@ -1,6 +1,7 @@
-import {DataSource} from "typeorm";
+import {DataSource, DeleteResult} from "typeorm";
 import {User} from "../entity/User";
 import {Repository} from "typeorm/repository/Repository";
+import {userLoginInterface} from "../../interface";
 
 export default class UserDAO {
 
@@ -53,8 +54,14 @@ export default class UserDAO {
         return await this.userRepository.update({id: user.id}, user);
     }
 
-    async delete(id: number) {
+    async delete(id: number): Promise<DeleteResult> {
         return await this.userRepository.delete({id});
+    }
+
+    async login({login, password}: userLoginInterface): Promise<boolean> {
+        const count: number = await this.userRepository.count({where: {login, password}});
+
+        return count !== 0;
     }
 
 }

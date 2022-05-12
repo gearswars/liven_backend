@@ -20,7 +20,7 @@ export class User {
     @Column()
     surname?: string
 
-    @Column({unique: true})
+    @Column({unique: true, nullable: false})
     login?: string
 
     @Column()
