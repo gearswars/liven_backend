@@ -4,6 +4,13 @@ import {Address} from "./Address";
 @Entity('user')
 export class User {
 
+    constructor(name?: string, surname?: string, login?: string, password?: string) {
+        this.name = name;
+        this.surname = surname;
+        this.login = login;
+        this.password = password;
+    }
+
     @PrimaryGeneratedColumn()
     id?: number
 
@@ -13,7 +20,7 @@ export class User {
     @Column()
     surname?: string
 
-    @Column()
+    @Column({unique: true})
     login?: string
 
     @Column()
