@@ -1,4 +1,4 @@
-import {DataSource, DeleteResult} from "typeorm";
+import {DataSource, DeleteResult, UpdateResult} from "typeorm";
 import {User} from "../entity/User";
 import {Repository} from "typeorm/repository/Repository";
 import {userLoginInterface} from "../../interface";
@@ -27,7 +27,10 @@ export default class UserDAO {
                         'surname',
                         'login',
                         'addresses'
-                    ]
+                    ],
+                    where: {
+                        active: true
+                    }
                 }
             );
     }
@@ -38,19 +41,22 @@ export default class UserDAO {
                     relations: {
                         addresses: true
                     },
-                    where: {id},
                     select: [
                         'id',
                         'name',
                         'surname',
                         'login',
                         'addresses'
-                    ]
+                    ],
+                    where: {
+                        id,
+                        active: true
+                    }
                 }
             );
     }
 
-    async update(user: User) {
+    async update(user: User): Promise<UpdateResult> {
         return await this.userRepository.update({id: user.id}, user);
     }
 
@@ -58,8 +64,21 @@ export default class UserDAO {
         return await this.userRepository.delete({id});
     }
 
+    async softDelete(id: number): Promise<UpdateResult> {
+        return await this.userRepository.update({id}, {active: false});
+    }
+
     async login({login, password}: userLoginInterface): Promise<boolean> {
-        const count: number = await this.userRepository.count({where: {login, password}});
+        const count: number = await this.userRepository.count({
+                where: {
+                    login: login ? login : '',
+                    password: password ? password : ''
+                },
+                relations: {
+                    addresses: false
+                }
+            }
+        );
 
         return count !== 0;
     }
