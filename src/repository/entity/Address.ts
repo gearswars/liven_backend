@@ -4,7 +4,6 @@ import {User} from "./User";
 @Entity('address')
 export class Address {
 
-
     constructor(address?: string, street?: string, city?: string, state?: string, country?: string, user?: User) {
         this.address = address;
         this.street = street;
@@ -32,8 +31,8 @@ export class Address {
     @Column()
     country?: string
 
-    @ManyToOne(() => User, (user) => user.addresses)
+    @ManyToOne(() => User, (user) => user.addresses, {cascade: true, onUpdate: 'CASCADE'})
     @JoinColumn({name: 'id_user'})
-    user: User;
+    user?: User;
 
 }

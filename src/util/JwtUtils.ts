@@ -1,4 +1,4 @@
-import {sign} from 'jsonwebtoken';
+import {JwtPayload, sign, verify} from 'jsonwebtoken';
 
 import {ProcessEnvInterface, properties} from "./ProcessEnvParse";
 
@@ -11,6 +11,10 @@ export default class JwtUtils {
         return sign(payload, secret, {
             expiresIn: days // expires in 7 days
         });
+    }
+
+    public doVerify(token: string): JwtPayload | string {
+        return verify(token, secret);
     }
 
     private static getDays(days: number) {

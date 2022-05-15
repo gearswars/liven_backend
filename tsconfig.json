@@ -3,6 +3,7 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "emitDecoratorMetadata": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
   }
 }

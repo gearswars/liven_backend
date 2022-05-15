@@ -2,6 +2,7 @@ const webpack = require(`webpack`);
 
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 require('dotenv').config({path: './.env'});
 
@@ -28,6 +29,18 @@ module.exports = {
                     'ts-loader'
                 ]
             }
+        ]
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new UglifyJsPlugin({
+                    sourceMap: NODE_ENV === 'development',
+                    uglifyOptions: {
+                        mangle: false
+                    }
+                }
+            )
         ]
     },
     plugins: [
