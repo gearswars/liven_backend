@@ -29,7 +29,7 @@ export class User {
     @Column({default: true})
     active?: boolean;
 
-    @OneToMany(() => Address, (address) => address.user)
+    @OneToMany(() => Address, (address) => address.user, )
     addresses?: Address[];
 
 }

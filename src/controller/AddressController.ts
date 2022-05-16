@@ -1,9 +1,10 @@
 import {Request, Response, Router} from 'express';
 import {StatusCodes} from "http-status-codes";
+import {JwtPayload} from "jsonwebtoken";
+
 import {getPath} from "../util/PathUtils";
 import {AddressDAO} from "../repository/dao/AddressDAO";
 import JwtUtils from "../util/JwtUtils";
-import {JwtPayload} from "jsonwebtoken";
 
 const {CONFLICT, NOT_MODIFIED, OK, NO_CONTENT, NOT_ACCEPTABLE} = StatusCodes;
 const {doVerify} = new JwtUtils();
@@ -32,10 +33,9 @@ export default class AddressController {
         try {
             const tokenBody = doVerify(req.header('Authorization'));
             if (this.instanceOfJwtPayload(tokenBody)) {
-                console.log(tokenBody);
-                const user = await this.addressDAO.create(tokenBody.login, req.body);
+                const address = await this.addressDAO.create(tokenBody.login, req.body);
 
-                res.status(OK).json(user).end();
+                res.status(OK).json(address).end();
             } else {
                 res.status(NOT_ACCEPTABLE).end()
             }
@@ -70,7 +70,7 @@ export default class AddressController {
         res.status(affected != 0 ? OK : NOT_MODIFIED).send();
     }
 
-    private instanceOfJwtPayload(object: any): object is JwtPayload {
+    private instanceOfJwtPayload = (object: any): object is JwtPayload =>{
         return 'login' in object;
     }
 

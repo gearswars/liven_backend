@@ -3,8 +3,12 @@ import {NextFunction, Request, Response} from 'express';
 import * as bodyParser from 'body-parser';
 import {StatusCodes} from "http-status-codes";
 import {JsonWebTokenError} from 'jsonwebtoken';
+import {serve, setup} from 'swagger-ui-express';
 
 import JwtUtils from "./util/JwtUtils";
+import {deepCompare} from "./util/ObjectUtils";
+
+const swaggerJson = require('../swagger.json');
 
 const {doVerify} = new JwtUtils();
 
@@ -23,16 +27,21 @@ export default class App {
         this.initializeControllers(controllers);
     }
 
+    public listen() {
+        this.app.listen(this.port, () => console.log(`App listening on the port ${this.port}`));
+    }
+
     private initializeMiddlewares() {
         this.app.use(bodyParser.json());
-        // this.app.use('/doc', serve, setup(swaggerFile));
+        this.app.use(bodyParser.urlencoded({extended: true}));
+        this.app.use('/doc', serve, setup(swaggerJson));
         this.app.use((req: Request, res: Response, next: NextFunction) => {
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
             res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
             res.setHeader('Access-Control-Allow-Credentials', 'true');
 
-            if (req.url === '/user/login' || req.url === '/user/login') {
+            if (this.getUrlWithoutAuth(req)) {
                 next();
             } else {
                 try {
@@ -49,10 +58,29 @@ export default class App {
         controllers.forEach((controller) => this.app.use('', controller.router));
     }
 
-    public listen() {
-        this.app.listen(this.port, () => {
-            console.log(`App listening on the port ${this.port}`);
-        });
+    private getUrlWithoutAuth(req: Request) {
+        const list = [
+            {
+                url: '/',
+                method: 'GET'
+            },
+            {
+                url: '/user/login',
+                method: 'POST'
+            },
+            {
+                url: '/user',
+                method: 'POST'
+            },
+            {
+                url: '/doc',
+                method: 'GET'
+            },
+        ];
+        return list.find(item => deepCompare(item, {
+            method: req.method,
+            url: req.url
+        }));
     }
 };
 

@@ -31,5 +31,3 @@ const dataSource = new DataSource({
 export function createConnection() {
     return dataSource;
 }
-
-export default (async () => await dataSource.initialize())()

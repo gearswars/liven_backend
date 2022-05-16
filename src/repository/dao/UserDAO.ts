@@ -1,17 +1,23 @@
 import {DataSource, DeleteResult, UpdateResult} from "typeorm";
+
 import {User} from "../entity/User";
 import {Repository} from "typeorm/repository/Repository";
 import {userLoginInterface} from "../../interface";
+import {Address} from "../entity/Address";
+import {crypt, verify} from "../../util/PasswordUtils";
 
 export default class UserDAO {
 
+    private addressRepository: Repository<Address>;
     private userRepository: Repository<User>;
 
     constructor(private dataSource: DataSource) {
+        this.addressRepository = dataSource.getRepository(Address);
         this.userRepository = dataSource.getRepository(User);
     }
 
     async create(user: User) {
+        user.password = await crypt(user.password);
         return await this.userRepository.save(user);
     }
 
@@ -61,6 +67,7 @@ export default class UserDAO {
     }
 
     async delete(id: number): Promise<DeleteResult> {
+        await this.addressRepository.query('DELETE FROM address WHERE id_user = ?', [id]);
         return await this.userRepository.delete({id});
     }
 
@@ -69,18 +76,19 @@ export default class UserDAO {
     }
 
     async login({login, password}: userLoginInterface): Promise<boolean> {
-        const count: number = await this.userRepository.count({
+        const user: User = await this.userRepository.findOne({
+                select: {
+                    password: true
+                },
                 where: {
-                    login: login ? login : '',
-                    password: password ? password : ''
+                    login: login ? login : ''
                 },
                 relations: {
                     addresses: false
                 }
             }
         );
-
-        return count !== 0;
+        return await verify(password, user.password);
     }
 
 }

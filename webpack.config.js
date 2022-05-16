@@ -19,7 +19,7 @@ module.exports = {
         filename: 'index.js'
     },
     resolve: {
-        extensions: ['.ts', '.js'],
+        extensions: ['.ts', '.js', '.json'],
     },
     module: {
         rules: [
@@ -28,8 +28,13 @@ module.exports = {
                 use: [
                     'ts-loader'
                 ]
-            }
-        ]
+            },
+            // {
+            //     test: /\.json$/,
+            //     loader: 'json-loader'
+            // }
+        ],
+
     },
     optimization: {
         minimize: true,

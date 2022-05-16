@@ -1,0 +1,21 @@
+version: '3'
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: liven_test
+    ports:
+      - '3306:3306'
+    network_mode: host
+  backend:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: dockerfile
+    depends_on:
+      - mysql
+    ports:
+      - '3000:3000'
+    network_mode: host
