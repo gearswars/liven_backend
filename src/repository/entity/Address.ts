@@ -16,22 +16,22 @@ export class Address {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column({nullable: true})
     address?: string
 
-    @Column()
+    @Column({nullable: true})
     street?: string
 
-    @Column()
+    @Column({nullable: true})
     city?: string
 
-    @Column()
+    @Column({nullable: true})
     state?: string
 
-    @Column()
+    @Column({nullable: true})
     country?: string
 
-    @ManyToOne(() => User, (user) => user.addresses, {cascade: true, onUpdate: 'CASCADE'})
+    @ManyToOne(() => User, (user) => user.addresses, {nullable: false, cascade: true, onUpdate: 'CASCADE', onDelete: 'CASCADE'})
     @JoinColumn({name: 'id_user'})
     user?: User;
 
