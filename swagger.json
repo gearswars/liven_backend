@@ -298,7 +298,7 @@
           {
             "in": "body",
             "name": "body",
-            "description": "Address object",
+            "description": "User object",
             "required": true,
             "schema": {
               "$ref": "#/definitions/User_body"
@@ -352,7 +352,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Address created"
+            "description": "User created"
           },
           "407": {
             "description": "Not authorization (not logged)"
@@ -388,11 +388,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Address list of object",
+            "description": "User list of object",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Address_response"
+                "$ref": "#/definitions/User_response"
               }
             }
           },
@@ -444,7 +444,7 @@
           "200": {
             "description": "User list of object",
             "schema": {
-              "$ref": "#/definitions/Address_response"
+              "$ref": "#/definitions/User_response"
             }
           },
           "204": {

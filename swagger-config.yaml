@@ -195,7 +195,7 @@ paths:
           type: "string"
         - in: "body"
           name: "body"
-          description: "Address object"
+          description: "User object"
           required: true
           schema:
             $ref: "#/definitions/User_body"
@@ -230,7 +230,7 @@ paths:
             $ref: "#/definitions/User_response"
       responses:
         "200":
-          description: "Address created"
+          description: "User created"
         "407":
           description: "Not authorization (not logged)"
         "503":
@@ -253,11 +253,11 @@ paths:
           type: "string"
       responses:
         "200":
-          description: "Address list of object"
+          description: "User list of object"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Address_response"
+              $ref: "#/definitions/User_response"
         "204":
           description: "Users not found"
         "407":
@@ -290,7 +290,7 @@ paths:
         "200":
           description: "User list of object"
           schema:
-            $ref: "#/definitions/Address_response"
+            $ref: "#/definitions/User_response"
         "204":
           description: "User not found"
         "407":
